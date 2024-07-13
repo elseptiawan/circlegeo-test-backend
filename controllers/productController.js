@@ -74,3 +74,34 @@ exports.updateProduct = async(req, res) => {
         sendResponse(res, 500, error.message);
     }
 }
+
+exports.getProducts = async(req, res) => {
+    try {
+        const store = await Store.findOne({ user_id: req.userId });
+        if (!store){
+            return sendResponse(res, 400, 'You have not created your store. Please create your store first');
+        }
+
+        const products = await Product.find({ store_id: store.id });
+        sendResponse(res, 200, 'Success Get Products', products);
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}
+
+exports.getProduct = async(req, res) => {
+    try {
+        const store = await Store.findOne({ user_id: req.userId });
+        if (!store){
+            return sendResponse(res, 400, 'You have not created your store. Please create your store first');
+        }
+
+        const product = await Product.findOne({ store_id: store.id, _id: req.params.id });
+        if (!product){
+            return sendResponse(res, 400, 'Product not found');
+        }
+        sendResponse(res, 200, 'Success Get Product', product);
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}

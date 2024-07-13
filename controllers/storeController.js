@@ -1,4 +1,5 @@
 const Store = require('../models/Store');
+const Order = require('../models/Order');
 const Validator = require('fastest-validator');
 const { sendResponse, validationErrResponse } = require('../helpers/response');
 
@@ -85,6 +86,24 @@ exports.getStore = async(req, res) => {
             return sendResponse(res, 400, 'You have not created your store. Please create your store first');
         }
         sendResponse(res, 200, 'Success Get Store', store);
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}
+
+exports.getOrders = async(req, res) => {
+    try {
+        var store = await Store.findOne({ user_id: req.userId });
+        if (!store){
+            return sendResponse(res, 400, 'You have not created your store. Please create your store first');
+        }
+        var orders = await Order.find(
+            { 
+                store_id: store.id ,
+                status: 0
+            });
+            
+        sendResponse(res, 200, 'Success Get Orders', orders);
     } catch (error) {
         sendResponse(res, 500, error.message);
     }

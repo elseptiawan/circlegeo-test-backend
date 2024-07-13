@@ -67,7 +67,8 @@ https://documenter.getpostman.com/view/25970017/2sA3e5f8gN
 - Pelanggan melakukan registrasi dengan mengisi form yang telah disediakan
 - Pelanggan dapat melakukan login dengan email dan password yang telah didaftarkan
 - Pelanggan dapat melihat list produk yang ada
-- pelanggan dapat melihat list produk terdekat berdasarkan lokasi pelanggan
+- Pelanggan dapat melihat list produk terdekat berdasarkan lokasi pelanggan
+- Untuk produk terdekat hanya menampilkan produk yang memiliki jarak kurang dari 10 km
 - Pelanggan dapat melakukan order produk
 - Pelanggan dapat melihat list order yang telah dibuat
 - pelanggan dapat mengubah status order menjadi selesai

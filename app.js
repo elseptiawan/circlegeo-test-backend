@@ -11,6 +11,7 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const storeRoutes = require('./routes/storeRoutes');
 const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -22,6 +23,7 @@ apiRoutes.use('/auth', authRoutes);
 apiRoutes.use('/admin', adminRoutes);
 apiRoutes.use('/store', storeRoutes);
 apiRoutes.use('/product', productRoutes);
+apiRoutes.use('/order', orderRoutes);
 
 app.listen(port, () => {
     console.log(`Server Run at Port ${port}`);

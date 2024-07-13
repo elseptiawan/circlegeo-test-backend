@@ -4,7 +4,8 @@ const {
     createStore,
     updateStore,
     getStore,
-    getOrders
+    getOrders,
+    sendOrder
 } = require('../controllers/storeController');
 const authorization = require('../middlewares/authorization');
 
@@ -12,5 +13,6 @@ router.post('/', authorization('seller'), createStore);
 router.put('/', authorization('seller'), updateStore);
 router.get('/', authorization('seller'), getStore);
 router.get('/orders', authorization('seller'), getOrders);
+router.put('/orders/:order_id', authorization('seller'), sendOrder);
 
 module.exports = router;

@@ -18,6 +18,7 @@ authorization = (role) => {
             req.userId = decoded.userId;
             req.email = decoded.email;
             req.role = decoded.role;
+            req.isVerified = decoded.isVerified;
             next();
         });
     }

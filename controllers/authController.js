@@ -29,8 +29,9 @@ exports.login = async(req, res) => {
         const userId = user.id;
         const email = user.email;
         const role = user.role;
+        const isVerified = user.isVerified;
 
-        const token = jwt.sign({userId, email, role}, process.env.API_KEY, {
+        const token = jwt.sign({userId, email, role, isVerified}, process.env.API_KEY, {
             expiresIn: '86400s'
         });
         

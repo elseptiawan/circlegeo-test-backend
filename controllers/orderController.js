@@ -1,7 +1,9 @@
 const Product = require('../models/Product');
 const Store = require('../models/Store');
+const Order = require('../models/Order');
 const Validator = require('fastest-validator');
 const { sendResponse, validationErrResponse } = require('../helpers/response');
+const mongoose = require('mongoose');
 
 const v = new Validator();
 
@@ -58,5 +60,44 @@ exports.getNearbyProducts = async(req, res) => {
         sendResponse(res, 200, 'Success Get Nearby Products', products);
     } catch (error) {
         sendResponse(res, 500, error.message);
+    }
+}
+
+exports.checkoutOrder = async(req, res) => {
+    const schema = {
+        product_id : 'string',
+        qty: 'number',
+    }
+        
+    const validate = v.validate(req.body, schema);
+        
+    if (validate.length){
+        return validationErrResponse(res, "Request Validation Error", validate);
+    }
+
+    try {
+        const product = await Product.findById(req.body.product_id);
+        if (!product){
+            return sendResponse(res, 400, 'Product not found');
+        }
+        if (product.stock < req.body.qty){
+            return sendResponse(res, 400, 'Product out of stock');
+        }
+        product.stock -= req.body.qty;
+
+        await product.save();
+
+        const order = new Order({
+            product_id: req.body.product_id,
+            qty: req.body.qty,
+            user_id: req.userId,
+            store_id: product.store_id,
+            total_price: product.price * req.body.qty
+        });
+        await order.save();
+
+        sendResponse(res, 200, 'Success Checkout Order', order);
+    } catch (error) {
+        sendResponse(res, 500, error);
     }
 }

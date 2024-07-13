@@ -19,7 +19,7 @@ const order = mongoose.Schema({
         type:mongoose.Types.ObjectId,
         ref: 'User'
     },
-    totalPrice:{
+    total_price:{
         required:true,
         type:Number
     },

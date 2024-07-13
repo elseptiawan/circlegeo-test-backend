@@ -8,6 +8,7 @@ const connectDB = require('./databases/db');
 connectDB();
 
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,7 @@ const apiRoutes = express.Router();
 app.use('/api', apiRoutes);
 
 apiRoutes.use('/auth', authRoutes);
+apiRoutes.use('/admin', adminRoutes);
 
 app.listen(port, () => {
     console.log(`Server Run at Port ${port}`);

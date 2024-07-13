@@ -8,7 +8,7 @@ authorization = (role) => {
         if(token == null) {
             return sendResponse(res, 401, 'Unauthorized');   
         }
-        jwt.verify(token, process.env.API_SECRET, (err, decoded) => {
+        jwt.verify(token, process.env.API_KEY, (err, decoded) => {
             if(err) {
                 return sendResponse(res, 403, 'Forbidden');
             }

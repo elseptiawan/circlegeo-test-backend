@@ -75,6 +75,10 @@ exports.checkoutOrder = async(req, res) => {
         return validationErrResponse(res, "Request Validation Error", validate);
     }
 
+    if (req.body.product_id.length !== 24){
+        return sendResponse(res, 400, 'Invalid Product ID');
+    }
+
     try {
         const product = await Product.findById(req.body.product_id);
         if (!product){

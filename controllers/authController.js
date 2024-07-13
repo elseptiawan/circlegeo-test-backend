@@ -73,3 +73,37 @@ exports.registerCustomer = async(req, res) => {
         sendResponse(res, 500, error.message);
     }
 }
+
+exports.registerSeller = async(req, res) => {
+    const schema = {
+        email : 'email',
+        password : 'string|min:6',
+        name : 'string',
+    }
+        
+    const validate = v.validate(req.body, schema);
+        
+    if (validate.length){
+        return validationErrResponse(res, "Request Validation Error", validate);
+    }
+
+    try {
+        var user = await User.findOne({ email: req.body.email });
+
+        if (user){
+            return sendResponse(res, 400, 'Email already registered');
+        }
+
+        user = new User({
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, 8),
+            name: req.body.name,
+            role: 'seller'
+        });
+
+        await user.save();
+        sendResponse(res, 200, 'Success registered');
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}

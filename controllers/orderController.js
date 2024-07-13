@@ -110,3 +110,37 @@ exports.getMyOrders = async(req, res) => {
         sendResponse(res, 500, error.message);
     }
 }
+
+exports.finishOrder = async(req, res) => {
+    const schema = {
+        order_id : 'string',
+    }
+        
+    const validate = v.validate(req.params, schema);
+        
+    if (validate.length){
+        return validationErrResponse(res, "Request Validation Error", validate);
+    }
+
+    if (req.params.order_id.length !== 24){
+        return sendResponse(res, 400, 'Invalid Order ID');
+    }
+
+    try {
+        const order = await Order.findOne({ _id: req.params.order_id, user_id: req.userId });
+        if (!order){
+            return sendResponse(res, 400, 'Order not found');
+        }
+        if (order.status === 0){
+            return sendResponse(res, 400, 'Order still in process or not yet sent');
+        }
+        if (order.status === 2){
+            return sendResponse(res, 400, 'Order already finished');
+        }
+        order.status = 2;
+        await order.save();
+        sendResponse(res, 200, 'Order Finished');
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}

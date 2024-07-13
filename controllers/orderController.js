@@ -101,3 +101,12 @@ exports.checkoutOrder = async(req, res) => {
         sendResponse(res, 500, error);
     }
 }
+
+exports.getMyOrders = async(req, res) => {
+    try {
+        const orders = await Order.find({ user_id: req.userId });
+        sendResponse(res, 200, 'Success Get Orders', orders);
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}

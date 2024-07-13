@@ -18,3 +18,23 @@ exports.getUsers = async(req, res) => {
         sendResponse(res, 500, error.message);
     }
 }
+
+exports.veryfyUser = async(req, res) => {
+    if (req.params.id.length !== 24){
+        return sendResponse(res, 400, 'Invalid User ID');
+    }
+    try {
+        var user = await User.findById(req.params.id);
+        if (!user){
+            return sendResponse(res, 400, 'User not found');
+        }
+        if (user.isVerified){
+            return sendResponse(res, 400, 'User already verified');
+        }
+        user.isVerified = true;
+        await user.save();
+        sendResponse(res, 200, 'User Verified');
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}

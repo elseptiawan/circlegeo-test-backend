@@ -77,3 +77,15 @@ exports.updateStore = async(req, res) => {
         sendResponse(res, 500, error.message);
     }
 }
+
+exports.getStore = async(req, res) => {
+    try {
+        var store = await Store.findOne({ user_id: req.userId });
+        if (!store){
+            return sendResponse(res, 400, 'You have not created your store. Please create your store first');
+        }
+        sendResponse(res, 200, 'Success Get Store', store);
+    } catch (error) {
+        sendResponse(res, 500, error.message);
+    }
+}
